@@ -13,4 +13,9 @@ class Lecture extends Model
         'title',
         'description',
     ];
+
+    public function isInPrograms()
+    {
+        return $this->hasMany(TrainingProgramItem::class, 'lecture_id');
+    }
 }

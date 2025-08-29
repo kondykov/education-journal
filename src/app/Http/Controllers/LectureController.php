@@ -19,22 +19,31 @@ class LectureController extends Controller
 
     public function index()
     {
-        return LectureResource::collection(Lecture::all());
+        return response()->json([
+            'success' => true,
+            'data' => LectureResource::collection(Lecture::paginate())
+        ]);
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => ['required', 'unique:lectures', 'max:255'],
-            'description' => ['required'],
+            'title' => ['required', 'string', 'unique:lectures', 'max:255'],
+            'description' => ['required', 'string'],
         ]);
 
-        return new LectureResource($this->lectureService->create($data));
+        return response()->json([
+            'success' => true,
+            'data' => new LectureResource($this->lectureService->create($data))
+        ], status: 201);
     }
 
     public function show(Lecture $lecture)
     {
-        return new LectureResource($lecture);
+        return response()->json([
+            'success' => true,
+            'data' => new LectureResource($lecture)
+        ]);
     }
 
     public function update(Request $request, Lecture $lecture)
@@ -44,11 +53,15 @@ class LectureController extends Controller
                 'required',
                 Rule::unique('lectures')->ignore($lecture->id),
                 'max:255',
+                'string',
             ],
-            'description' => ['required'],
+            'description' => ['required', 'string'],
         ]);
 
-        return new LectureResource($this->lectureService->update($data, $lecture));
+        return response()->json([
+            'success' => true,
+            'data' => new LectureResource($this->lectureService->update($data, $lecture))
+        ]);
     }
 
     public function delete(Lecture $lecture)
