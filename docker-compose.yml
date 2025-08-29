@@ -8,7 +8,7 @@ services:
       - "8080:80"
     depends_on:
       - app
-    container_name: lr.nginx
+    container_name: ej.nginx
 
   app:
     build:
