@@ -30,6 +30,4 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install mysqli
 
-RUN chown -RUN {LOCAL_USER:LOCAL_USER} .
-
 WORKDIR /var/www
