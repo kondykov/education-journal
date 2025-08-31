@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -42,7 +43,7 @@ class TrainingProgramService implements TrainingProgramServiceInterface
 
     function removeLecture(int $programId, int $lectureId): void
     {
-        $item = TrainingProgramItem::where('program_id', $programId)->where('lecture_id', $lectureId)->first();
-        $item?->delete();
+        $item = TrainingProgramItem::where('program_id', $programId)->where('lecture_id', $lectureId)->firstOrFail();
+        $item->delete();
     }
 }

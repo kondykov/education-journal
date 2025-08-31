@@ -6,14 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TrainingProgram extends Model
+class Student extends Model
 {
     protected $fillable = [
-        'title',
+        'name',
+        'email',
+        'training_class_id',
     ];
 
-    public function lectures()
+    public function trainingClass(): BelongsTo
     {
-        return $this->hasMany(TrainingProgramItem::class, 'training_program_id');
+        return $this->belongsTo(TrainingClass::class);
     }
 }

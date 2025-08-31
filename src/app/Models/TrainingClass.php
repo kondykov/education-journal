@@ -5,12 +5,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class TrainingProgramItem extends Model
+class TrainingClass extends Model
 {
     protected $fillable = [
+        'title',
         'training_program_id',
-        'lecture_id',
     ];
 
     public function trainingProgram(): BelongsTo
@@ -18,8 +20,7 @@ class TrainingProgramItem extends Model
         return $this->belongsTo(TrainingProgram::class);
     }
 
-    public function lecture(): BelongsTo
-    {
-        return $this->belongsTo(Lecture::class);
+    public function students(): BelongsToMany {
+        return $this->belongsToMany(Student::class);
     }
 }

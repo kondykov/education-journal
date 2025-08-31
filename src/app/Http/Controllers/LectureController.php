@@ -8,6 +8,7 @@ use App\Interfaces\LectureServiceInterface;
 use App\Models\Lecture;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LectureController extends Controller
 {
@@ -40,6 +41,10 @@ class LectureController extends Controller
 
     public function show(Lecture $lecture)
     {
+        if ($lecture->exists()) {
+            throw new NotFoundHttpException('Lecture not found');
+        }
+
         return response()->json([
             'success' => true,
             'data' => new LectureResource($lecture)
@@ -48,6 +53,10 @@ class LectureController extends Controller
 
     public function update(Request $request, Lecture $lecture)
     {
+        if ($lecture->exists()) {
+            throw new NotFoundHttpException('Lecture not found');
+        }
+
         $data = $request->validate([
             'title' => [
                 'required',

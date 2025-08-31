@@ -6,6 +6,7 @@ use App\Http\Resources\TrainingProgramResource;
 use App\Interfaces\TrainingProgramServiceInterface;
 use App\Models\TrainingProgram;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TrainingProgramController extends Controller
 {
@@ -37,6 +38,10 @@ class TrainingProgramController extends Controller
 
     public function show(TrainingProgram $trainingProgram)
     {
+        if ($trainingProgram->exists()) {
+            throw new NotFoundHttpException('Training program not found');
+        }
+
         return response()->json([
             'status' => true,
             'data' => new TrainingProgramResource($trainingProgram),
@@ -48,6 +53,10 @@ class TrainingProgramController extends Controller
         $data = $request->validate([
             'title' => ['required|string'],
         ]);
+
+        if ($trainingProgram->exists()) {
+            throw new NotFoundHttpException('Training program not found');
+        }
 
         $this->trainingProgramService->update($data, $trainingProgram);
 

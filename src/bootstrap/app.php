@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,6 +21,33 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'success' => false,
                 'data' => $e->errors(),
-            ], $e->status);
+            ], 422);
+        });
+
+        $exceptions->render(function (NotFoundHttpException $e) {
+            return response()->json([
+                'success' => false,
+                'data' => $e->getMessage(),
+            ], 404);
+        });
+
+        $exceptions->render(function (Exception $e) {
+            $isDebug = env('APP_DEBUG');
+
+            if ($isDebug === true) {
+                return response()->json([
+                    'success' => false,
+                    'data' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                        'trace' => $e->getTrace(),
+                    ],
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'data' => $e->getMessage(),
+            ], $e?->getCode() ?? 500);
         });
     })->create();

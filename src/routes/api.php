@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\LectureController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TrainingClassController;
 use App\Http\Controllers\TrainingProgramController;
 use App\Http\Controllers\TrainingProgramItemController;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +16,20 @@ route::prefix('lectures')->name('lectures.')->group(function () {
 });
 
 route::prefix('journal')->name('journal.')->group(function () {
-    route::prefix('class')->group(function () {
+    route::prefix('class')->name('class.')->group(function () {
+        route::get('/', [TrainingClassController::class, 'index'])->name('index');
+        route::post('/', [TrainingClassController::class, 'store'])->name('store');
+        route::get('/{trainingClass}', [TrainingClassController::class, 'show'])->name('show');
+        route::put('/{trainingClass}', [TrainingClassController::class, 'update'])->name('update');
+        route::delete('/{trainingClass}', [TrainingClassController::class, 'delete'])->name('delete');
+    });
+
+    route::prefix('students')->name('student.')->group(function () {
+        route::get('/', [StudentController::class, 'index'])->name('index');
+        route::post('/', [StudentController::class, 'store'])->name('store');
+        route::get('/{student}', [StudentController::class, 'show'])->name('show');
+        route::put('/{student}', [StudentController::class, 'update'])->name('index');
+        route::delete('/{student}', [StudentController::class, 'delete'])->name('delete');
     });
 
     route::prefix('programs')->name('programs.')->group(function () {
