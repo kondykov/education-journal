@@ -30,15 +30,15 @@ class TrainingProgramController extends Controller
             'title' => ['required|string'],
         ]);
 
-        return response()->jspn([
+        return response()->json([
             'status' => true,
-            'data' => new TrainingProgramResource(TrainingProgram::create($data)),
+            'data' => new TrainingProgramResource($this->trainingProgramService->create($data)),
         ]);
     }
 
     public function show(TrainingProgram $trainingProgram)
     {
-        if ($trainingProgram->exists()) {
+        if (!$trainingProgram->exists()) {
             throw new NotFoundHttpException('Training program not found');
         }
 
@@ -54,7 +54,7 @@ class TrainingProgramController extends Controller
             'title' => ['required|string'],
         ]);
 
-        if ($trainingProgram->exists()) {
+        if (!$trainingProgram->exists()) {
             throw new NotFoundHttpException('Training program not found');
         }
 

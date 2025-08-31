@@ -41,7 +41,7 @@ class LectureController extends Controller
 
     public function show(Lecture $lecture)
     {
-        if ($lecture->exists()) {
+        if (!$lecture->exists()) {
             throw new NotFoundHttpException('Lecture not found');
         }
 
@@ -53,7 +53,7 @@ class LectureController extends Controller
 
     public function update(Request $request, Lecture $lecture)
     {
-        if ($lecture->exists()) {
+        if (!$lecture->exists()) {
             throw new NotFoundHttpException('Lecture not found');
         }
 

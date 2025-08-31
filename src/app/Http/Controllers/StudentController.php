@@ -20,7 +20,7 @@ class StudentController extends Controller
     public function index()
     {
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => StudentResource::collection(Student::paginate()),
         ]);
     }
@@ -33,7 +33,7 @@ class StudentController extends Controller
         ]);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => new StudentResource($this->studentService->create($data)),
         ]);
     }
@@ -45,7 +45,7 @@ class StudentController extends Controller
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => new StudentResource($student),
         ]);
     }
@@ -60,7 +60,7 @@ class StudentController extends Controller
         $this->studentService->update($data, $student);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => new StudentResource($student),
         ]);
     }

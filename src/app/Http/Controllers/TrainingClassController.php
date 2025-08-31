@@ -21,7 +21,7 @@ class TrainingClassController extends Controller
     public function index()
     {
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => TrainingClassResource::collection(TrainingClass::paginate()),
         ]);
     }
@@ -37,7 +37,7 @@ class TrainingClassController extends Controller
         ]);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => new TrainingClassResource($this->trainingClassService->create($data)),
         ], 201);
     }
@@ -49,7 +49,7 @@ class TrainingClassController extends Controller
         }
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => new TrainingClassResource($trainingClass),
         ]);
     }
@@ -71,7 +71,7 @@ class TrainingClassController extends Controller
         $this->trainingClassService->update($trainingClass, $data);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => new TrainingClassResource($trainingClass),
         ]);
     }

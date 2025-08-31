@@ -28,7 +28,8 @@ class TrainingProgramItemController extends Controller
         $this->trainingProgramService->addLecture($data['training_program_id'], $data['lecture_id']);
 
         return response()->json([
-            'data' => true
+            'success' => true,
+            'data' => []
         ]);
     }
 

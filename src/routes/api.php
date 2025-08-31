@@ -28,7 +28,7 @@ route::prefix('journal')->name('journal.')->group(function () {
         route::get('/', [StudentController::class, 'index'])->name('index');
         route::post('/', [StudentController::class, 'store'])->name('store');
         route::get('/{student}', [StudentController::class, 'show'])->name('show');
-        route::put('/{student}', [StudentController::class, 'update'])->name('index');
+        route::put('/{student}', [StudentController::class, 'update'])->name('update');
         route::delete('/{student}', [StudentController::class, 'delete'])->name('delete');
     });
 
