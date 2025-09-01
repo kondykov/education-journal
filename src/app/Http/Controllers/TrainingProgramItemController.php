@@ -3,12 +3,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TrainingProgramItemResource;
+use App\Http\Requests\TrainingProgramItemRequest;
 use App\Interfaces\TrainingProgramServiceInterface;
-use App\Models\Lecture;
-use App\Models\TrainingProgram;
-use App\Models\TrainingProgramItem;
-use Illuminate\Http\Request;
 
 class TrainingProgramItemController extends Controller
 {
@@ -18,12 +14,9 @@ class TrainingProgramItemController extends Controller
     {
     }
 
-    public function add(Request $request)
+    public function add(TrainingProgramItemRequest $request)
     {
-        $data = $request->validate([
-            'training_program_id' => ['required', 'integer', 'exists:training_programs,id'],
-            'lecture_id' => ['required', 'integer', 'exists:lectures,id'],
-        ]);
+        $data = $request->validated();
 
         $this->trainingProgramService->addLecture($data['training_program_id'], $data['lecture_id']);
 
@@ -33,12 +26,9 @@ class TrainingProgramItemController extends Controller
         ]);
     }
 
-    public function remove(Request $request)
+    public function remove(TrainingProgramItemRequest $request)
     {
-        $data = $request->validate([
-            'training_program_id' => ['required', 'integer', 'exists:training_programs,id'],
-            'lecture_id' => ['required', 'integer', 'exists:lectures,id'],
-        ]);
+        $data = $request->validated();
 
         $this->trainingProgramService->removeLecture($data['training_program_id'], $data['lecture_id']);
 

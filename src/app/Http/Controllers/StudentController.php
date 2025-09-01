@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
 use App\Interfaces\StudentServiceInterface;
 use App\Models\Student;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StudentController extends Controller
 {
@@ -25,39 +24,25 @@ class StudentController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
-        $data = $request->validate([
-            'name' => ['required'],
-            'training_class_id' => ['nullable', 'exists:training_classes'],
-        ]);
-
         return response()->json([
             'success' => true,
-            'data' => new StudentResource($this->studentService->create($data)),
+            'data' => new StudentResource($this->studentService->create($request->validated())),
         ]);
     }
 
     public function show(Student $student)
     {
-        if (!$student->exists()) {
-            throw new NotFoundHttpException('Student not found');
-        }
-
         return response()->json([
             'success' => true,
             'data' => new StudentResource($student),
         ]);
     }
 
-    public function update(Request $request, Student $student)
+    public function update(StudentRequest $request, Student $student)
     {
-        $data = $request->validate([
-            'name' => ['required'],
-            'training_class_id' => ['nullable', 'exists:training_classes'],
-        ]);
-
-        $this->studentService->update($data, $student);
+        $this->studentService->update($request->validated(), $student);
 
         return response()->json([
             'success' => true,

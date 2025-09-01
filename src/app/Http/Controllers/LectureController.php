@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LectureRequest;
+use App\Http\Requests\ExistsLectureRequest;
 use App\Http\Resources\LectureResource;
 use App\Interfaces\LectureServiceInterface;
 use App\Models\Lecture;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LectureController extends Controller
 {
@@ -26,50 +25,27 @@ class LectureController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(LectureRequest $request)
     {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'unique:lectures', 'max:255'],
-            'description' => ['required', 'string'],
-        ]);
-
         return response()->json([
             'success' => true,
-            'data' => new LectureResource($this->lectureService->create($data))
+            'data' => new LectureResource($this->lectureService->create($request->validated()))
         ], status: 201);
     }
 
     public function show(Lecture $lecture)
     {
-        if (!$lecture->exists()) {
-            throw new NotFoundHttpException('Lecture not found');
-        }
-
         return response()->json([
             'success' => true,
             'data' => new LectureResource($lecture)
         ]);
     }
 
-    public function update(Request $request, Lecture $lecture)
+    public function update(ExistsLectureRequest $request, Lecture $lecture)
     {
-        if (!$lecture->exists()) {
-            throw new NotFoundHttpException('Lecture not found');
-        }
-
-        $data = $request->validate([
-            'title' => [
-                'required',
-                Rule::unique('lectures')->ignore($lecture->id),
-                'max:255',
-                'string',
-            ],
-            'description' => ['required', 'string'],
-        ]);
-
         return response()->json([
             'success' => true,
-            'data' => new LectureResource($this->lectureService->update($data, $lecture))
+            'data' => new LectureResource($this->lectureService->update($request->validated(), $lecture))
         ]);
     }
 

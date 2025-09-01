@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExistsTrainingClassRequest;
+use App\Http\Requests\TrainingClassRequest;
 use App\Http\Resources\TrainingClassResource;
 use App\Interfaces\TrainingClassServiceInterface;
 use App\Models\TrainingClass;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TrainingClassController extends Controller
 {
@@ -26,49 +25,25 @@ class TrainingClassController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(TrainingClassRequest $request)
     {
-        $data = $request->validate([
-            'title' => [
-                'required',
-                Rule::unique('training_class', 'title')
-            ],
-            'training_program_id' => ['nullable', 'exists:training_programs'],
-        ]);
-
         return response()->json([
             'success' => true,
-            'data' => new TrainingClassResource($this->trainingClassService->create($data)),
+            'data' => new TrainingClassResource($this->trainingClassService->create($request->validated())),
         ], 201);
     }
 
     public function show(TrainingClass $trainingClass)
     {
-        if (!$trainingClass->exists()) {
-            throw new NotFoundHttpException('Training program not found');
-        }
-
         return response()->json([
             'success' => true,
             'data' => new TrainingClassResource($trainingClass),
         ]);
     }
 
-    public function update(Request $request, TrainingClass $trainingClass)
+    public function update(ExistsTrainingClassRequest $request, TrainingClass $trainingClass)
     {
-        $data = $request->validate([
-            'title' => [
-                'required',
-                Rule::unique('training_class', 'title')->ignore($trainingClass->id),
-            ],
-            'training_program_id' => ['nullable', 'exists:training_programs'],
-        ]);
-
-        if (!$trainingClass->exists()) {
-            throw new NotFoundHttpException("Training class not found.");
-        }
-
-        $this->trainingClassService->update($trainingClass, $data);
+        $this->trainingClassService->update($trainingClass, $request->validated());
 
         return response()->json([
             'success' => true,

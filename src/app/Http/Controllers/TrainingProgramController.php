@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TrainingProgramRequest;
 use App\Http\Resources\TrainingProgramResource;
 use App\Interfaces\TrainingProgramServiceInterface;
 use App\Models\TrainingProgram;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TrainingProgramController extends Controller
 {
@@ -24,41 +23,25 @@ class TrainingProgramController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(TrainingProgramRequest $request)
     {
-        $data = $request->validate([
-            'title' => ['required|string'],
-        ]);
-
         return response()->json([
             'status' => true,
-            'data' => new TrainingProgramResource($this->trainingProgramService->create($data)),
+            'data' => new TrainingProgramResource($this->trainingProgramService->create($request->validated())),
         ]);
     }
 
     public function show(TrainingProgram $trainingProgram)
     {
-        if (!$trainingProgram->exists()) {
-            throw new NotFoundHttpException('Training program not found');
-        }
-
         return response()->json([
             'status' => true,
             'data' => new TrainingProgramResource($trainingProgram),
         ]);
     }
 
-    public function update(Request $request, TrainingProgram $trainingProgram)
+    public function update(TrainingProgramRequest $request, TrainingProgram $trainingProgram)
     {
-        $data = $request->validate([
-            'title' => ['required|string'],
-        ]);
-
-        if (!$trainingProgram->exists()) {
-            throw new NotFoundHttpException('Training program not found');
-        }
-
-        $this->trainingProgramService->update($data, $trainingProgram);
+        $this->trainingProgramService->update($request->validated(), $trainingProgram);
 
         return response()->json([
             'status' => true,
