@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StudentRequest extends FormRequest
+class ExistsStudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,9 +22,14 @@ class StudentRequest extends FormRequest
      */
     public function rules(): array
     {
+        $student = $this->route()->parameter('student');
+
         return [
             'name' => ['required'],
-            'email' => ['required', 'unique:students,email'],
+            'email' => [
+                'required',
+                Rule::unique('lectures', 'title')->ignore($student->id)
+            ],
             'training_class_id' => ['nullable', 'exists:training_classes'],
         ];
     }

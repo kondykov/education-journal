@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExistsStudentRequest;
 use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
 use App\Interfaces\StudentServiceInterface;
@@ -40,7 +41,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function update(StudentRequest $request, Student $student)
+    public function update(ExistsStudentRequest $request, Student $student)
     {
         $this->studentService->update($request->validated(), $student);
 
