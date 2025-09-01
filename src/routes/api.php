@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Route;
 route::prefix('lectures')->name('lectures.')->group(function () {
     route::get('/', [LectureController::class, 'index'])->name('index');
     route::post('/', [LectureController::class, 'store'])->name('store');
-    route::put('/{lecture}', [LectureController::class, 'update'])->name('update');
+    route::put('/', [LectureController::class, 'listened'])->name('show.listened');
     route::get('/{lecture}', [LectureController::class, 'show'])->name('show');
+    route::put('/{lecture}', [LectureController::class, 'update'])->name('update');
     route::delete('/{lecture}', [LectureController::class, 'delete'])->name('delete');
 });
 
@@ -21,6 +22,8 @@ route::prefix('journal')->name('journal.')->group(function () {
         route::post('/', [TrainingClassController::class, 'store'])->name('store');
         route::get('/{trainingClass}', [TrainingClassController::class, 'show'])->name('show');
         route::put('/{trainingClass}', [TrainingClassController::class, 'update'])->name('update');
+        route::post('/{trainingClass}', [TrainingClassController::class, 'listenLecture'])->name('listenLecture');
+        route::get('/{trainingClass}', [TrainingClassController::class, 'getListened'])->name('getlistenLecture');
         route::delete('/{trainingClass}', [TrainingClassController::class, 'delete'])->name('delete');
     });
 

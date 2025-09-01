@@ -12,7 +12,7 @@ class TrainingClassRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,9 +25,9 @@ class TrainingClassRequest extends FormRequest
         return [
             'title' => [
                 'required',
-                Rule::unique('training_class', 'title')
+                Rule::unique('training_classes', 'title')
             ],
-            'training_program_id' => ['nullable', 'exists:training_programs'],
+            'training_program_id' => ['nullable', 'exists:training_programs,id'],
         ];
     }
 }

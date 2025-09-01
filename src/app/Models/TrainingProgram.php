@@ -12,7 +12,7 @@ class TrainingProgram extends Model
         'title',
     ];
 
-    public function lectures()
+    public function items()
     {
         return $this->hasMany(TrainingProgramItem::class, 'training_program_id');
     }

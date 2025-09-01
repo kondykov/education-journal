@@ -38,7 +38,7 @@ class TrainingProgramService implements TrainingProgramServiceInterface
             throw new EntityExistsExceptions('Lecture already added in this program');
         }
 
-        TrainingProgramItem::create(['lecture_id' => $lectureId, 'program_id' => $programId]);
+        TrainingProgramItem::create(['lecture_id' => $lectureId, 'training_program_id' => $programId]);
     }
 
     function removeLecture(int $programId, int $lectureId): void
