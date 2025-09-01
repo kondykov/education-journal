@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 route::prefix('lectures')->name('lectures.')->group(function () {
     route::get('/', [LectureController::class, 'index'])->name('index');
     route::post('/', [LectureController::class, 'store'])->name('store');
-    route::put('/', [LectureController::class, 'listened'])->name('show.listened');
     route::get('/{lecture}', [LectureController::class, 'show'])->name('show');
     route::put('/{lecture}', [LectureController::class, 'update'])->name('update');
     route::delete('/{lecture}', [LectureController::class, 'delete'])->name('delete');
